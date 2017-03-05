@@ -36,6 +36,12 @@
     <ClCompile Include="ThreadPool.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="BackgroundWorker.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Synchronize.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BlockFeature.h">
@@ -54,6 +60,12 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="ThreadPool.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="BackgroundWorker.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Synchronize.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

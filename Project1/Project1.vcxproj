@@ -76,6 +76,9 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LibraryPath>D:\opencv\build\x64\vc14\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <LibraryPath>D:\opencv\build\x64\vc14\lib;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
@@ -118,27 +121,33 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>D:\opencv\build\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>opencv_world320.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="BackgroundWorker.cpp" />
     <ClCompile Include="BlockFeature.cpp" />
     <ClCompile Include="CharImgHelper.cpp" />
     <ClCompile Include="CharToImg.cpp" />
     <ClCompile Include="ImgToChar.cpp" />
     <ClCompile Include="ImgUtil.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Synchronize.cpp" />
     <ClCompile Include="ThreadPool.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BackgroundWorker.h" />
     <ClInclude Include="BlockFeature.h" />
     <ClInclude Include="CharImgHelper.h" />
     <ClInclude Include="CharToImg.h" />
     <ClInclude Include="ImgToChar.h" />
     <ClInclude Include="ImgUtil.h" />
+    <ClInclude Include="Synchronize.h" />
     <ClInclude Include="ThreadPool.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
