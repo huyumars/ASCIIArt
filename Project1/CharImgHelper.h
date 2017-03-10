@@ -14,5 +14,6 @@ private:
 	ImgToChar imgToCharHelper;
 	CharToImg charToimgHelper;
 	cv::Mat outImg;
+	cv::Mat colorMap;
 };
 

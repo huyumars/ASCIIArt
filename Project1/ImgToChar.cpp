@@ -37,18 +37,19 @@ char GrayMap::charOfGray(uchar grey)
 	
 }
 
-ImgToChar::ResultType& ImgToChar::getResultString(cv::Mat & img)
+ImgToChar::ResultType& ImgToChar::getResultString(cv::Mat & img, cv::Mat & colorMap)
 {
-	cv::cvtColor(img, greyMatCache, cv::COLOR_BGR2GRAY);
-	cv::resize(greyMatCache, resizedMatCache, sampleSize,0,0, cv::INTER_AREA);
-
-	int nl = resizedMatCache.rows;
-	int nc = resizedMatCache.cols * resizedMatCache.channels();
+	
+	cv::resize(img, resizedMatCache, sampleSize,0,0, cv::INTER_AREA);
+	resizedMatCache.copyTo(colorMap);
+	cv::cvtColor(resizedMatCache, greyMatCache, cv::COLOR_BGR2GRAY);
+	int nl = greyMatCache.rows;
+	int nc = greyMatCache.cols * greyMatCache.channels();
 
 	//遍历图像的每个像素
 	for (int j = 0; j<nl; ++j)
 	{
-		uchar *data = resizedMatCache.ptr<uchar>(j);//.ptr<uchar>得到的是一个行的指针
+		uchar *data = greyMatCache.ptr<uchar>(j);//.ptr<uchar>得到的是一个行的指针
 		for (int i = 0; i<nc; ++i)
 		{
 			outputCache[j][i] = GrayMap::charOfGray(data[i]);
@@ -62,7 +63,7 @@ ImgToChar::ResultType& ImgToChar::getResultString(cv::Mat & img)
 ImgToChar::ImgToChar(cv::Size imgSize, cv::Size _sampleSize):
 	orgSize(imgSize),
 	sampleSize(_sampleSize),
-	greyMatCache(cv::Mat(imgSize, CV_8U)),
+	greyMatCache(cv::Mat(sampleSize, CV_8U)),
 	resizedMatCache(cv::Mat(sampleSize, CV_8U)),
 	outputCache(sampleSize.height, std::string(sampleSize.width, ' '))
 {

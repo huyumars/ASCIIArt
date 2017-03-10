@@ -15,14 +15,14 @@ public:
 	static void initWithColor(cv::Mat &img, ColorType color) {
 		for (int j = 0; j<img.rows; ++j)
 		{
-			uchar *data = img.ptr<ColorType>(j);//.ptr<uchar>得到的是一个行的指针
+			ColorType *data = img.ptr<ColorType>(j);//.ptr<uchar>得到的是一个行的指针
 			for (int i = 0; i<img.cols; ++i)
 			{
 				data[i] = color;
 			}
 		}
 	}
-	static void  printCharToImg(char& ch, cv::Mat &charImg, cv::Point&& position);
+	static void  printCharToImg(const char& ch, cv::Mat &charImg, cv::Point&& position, cv::Scalar color=cv::Scalar(0,0,0));
 	template<class ColorType>
 	static double calGrey(cv::Mat & img) {
 		long sum = 0;

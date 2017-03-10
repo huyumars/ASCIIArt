@@ -31,7 +31,7 @@ class ImgToChar
 {
 public:
 	typedef  std::vector<std::string> ResultType;
-	ResultType & getResultString(cv::Mat& img);
+	ResultType & getResultString(cv::Mat& img, cv::Mat &  colorMap);
 	ImgToChar(cv::Size imgSize,cv::Size sampleSize);
 	~ImgToChar();
 private:

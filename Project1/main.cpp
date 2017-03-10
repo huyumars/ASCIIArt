@@ -30,7 +30,7 @@ int main(int argc, char* argv[])
 	//return 0;
 
 
-	cv::VideoCapture capture("1.mp4");//要读取的视频文件  
+	cv::VideoCapture capture("2.mkv");//要读取的视频文件  
 										  // check if video successfully opened  
 	
 	if (!capture.isOpened())
@@ -39,18 +39,23 @@ int main(int argc, char* argv[])
 	double rate = capture.get(CV_CAP_PROP_FPS);
 	int frameWidth = capture.get(CV_CAP_PROP_FRAME_WIDTH);
 	int frameHeight = capture.get(CV_CAP_PROP_FRAME_HEIGHT);
-	cv::VideoWriter  video("ouput.avi", CV_FOURCC('X', 'V', 'I', 'D'),
-		rate, cvSize(frameWidth, frameHeight), 0);//1代表彩色视频，0代表黑白视频，即mask
+	long framecnt = capture.get(CV_CAP_PROP_FRAME_COUNT);
+	long cnt=0;
+
+	// CV_FOURCC('D','I','B',' ') is lossless, but it may touch the 4GB limtation of opencv
+	cv::VideoWriter  video("ouput.avi", CV_FOURCC('D','I','V','X'),
+		rate, cvSize(frameWidth, frameHeight), 1);//1代表彩色视频，0代表黑白视频，即mask
 	bool stop(false);
 	cv::Mat frame; // current video frame  
-	cv::namedWindow("Extracted Frame");
-	// Delay between each frame in ms  
-	// corresponds to video frame rate  
+	//cv::namedWindow("Extracted Frame");
+
+
+
 	CharImgHelper cih(cv::Size(frameWidth,frameHeight), 5);
 	int delay = 1000 / rate;
-	// for all frames in video  
+	int videoFCC = video.get(CV_CAP_PROP_FOURCC);
 	while (!stop) {
-		// read next frame if any  
+
 		if (!capture.read(frame))
 			break;
 		cv::Mat & result = cih.processImg(frame);
@@ -61,9 +66,12 @@ int main(int argc, char* argv[])
 		//if (cv::waitKey(delay) >= 0)
 			//stop = true;
 		cv::waitKey(10);
+		cnt++;
+		if (cnt % 20) {
+			std::cout <<"progress "<< 100*cnt / (float)framecnt << "%" << std::endl;		
+		}
 	}
-	// Close the video file.  
-	// Not required since called by destructor  
+
 	capture.release();
 
 
