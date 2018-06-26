@@ -30,7 +30,7 @@ int main(int argc, char* argv[])
 	//return 0;
 
 
-	cv::VideoCapture capture("2.mkv");//要读取的视频文件  
+	cv::VideoCapture capture("haha.mp4");//要读取的视频文件  
 										  // check if video successfully opened  
 	
 	if (!capture.isOpened())
@@ -47,11 +47,11 @@ int main(int argc, char* argv[])
 		rate, cvSize(frameWidth, frameHeight), 1);//1代表彩色视频，0代表黑白视频，即mask
 	bool stop(false);
 	cv::Mat frame; // current video frame  
-	//cv::namedWindow("Extracted Frame");
+	cv::namedWindow("Extracted Frame");
 
 
 
-	CharImgHelper cih(cv::Size(frameWidth,frameHeight), 5);
+	CharImgHelper cih(cv::Size(frameWidth,frameHeight),2);
 	int delay = 1000 / rate;
 	int videoFCC = video.get(CV_CAP_PROP_FOURCC);
 	while (!stop) {
@@ -67,7 +67,7 @@ int main(int argc, char* argv[])
 			//stop = true;
 		cv::waitKey(10);
 		cnt++;
-		if (cnt % 20) {
+		if (cnt % 20==0) {
 			std::cout <<"progress "<< 100*cnt / (float)framecnt << "%" << std::endl;		
 		}
 	}

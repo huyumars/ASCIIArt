@@ -10,7 +10,7 @@ CharToImg::CharToImg(cv::Size sampleSize)
 
 cv::Mat & CharToImg::charToImg(std::vector<std::string> &output, cv::Mat& colorMap)
 {
-	ImgUtil::initWithColor<cv::Vec3b>(outputCache, cv::Vec3b(255,255,255));
+	ImgUtil::initWithColor<cv::Vec3b>(outputCache, cv::Vec3b(0,0,0));
 	std::vector<std::future<int>> resultlist;
 	for (int count = 0; count < output.size(); count++) {
 		const std::string& str = output[count];
@@ -19,7 +19,7 @@ cv::Mat & CharToImg::charToImg(std::vector<std::string> &output, cv::Mat& colorM
 			cv::Vec3b *data = colorMap.ptr<cv::Vec3b>(count);
 			for (int i = 0; i < str.size(); ++i) {
 				cv::Scalar color = data[i];
-				ImgUtil::printCharToImg('@',outputCache, cvPoint(offset * CharWidth, count*CharHeight),color);
+				ImgUtil::printCharToImg(str[i],outputCache, cvPoint(offset * CharWidth, count*CharHeight),color);
 				offset++;
 			}	
 		});
