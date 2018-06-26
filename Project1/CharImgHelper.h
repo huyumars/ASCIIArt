@@ -11,7 +11,7 @@ public:
 	cv::Mat & processImg(cv::Mat & img);
 private:
 	cv::Size sampleSize;
-	ImgToChar<> imgToCharHelper;
+	ImgToChar imgToCharHelper;
 	CharToImg charToimgHelper;
 	cv::Mat outImg;
 	cv::Mat colorMap;

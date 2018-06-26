@@ -1,9 +1,7 @@
-
 #include "ImgToChar.h"
 #include"ImgUtil.h"
 
-
-std::shared_ptr<GrayMap> GrayMap::instancePtr = std::shared_ptr<GrayMap>(new GrayMap());
+GrayMap* GrayMap::_instance = new GrayMap();
 
 uchar mapToColor(double max, double min, double value) {
 	return ((value - min) / (max - min)) * 255;
@@ -14,8 +12,8 @@ GrayMap::GrayMap() {
 	double maxv, minv;
 	maxv = 0; minv = 256;
 	for (char ch = 0; ch < 127; ch++) {
-		ImgUtil::initWithColor<uchar>(charImg, 0);
-		ImgUtil::printCharToImg(ch, charImg, cvPoint(0, charImg.rows - 10),cv::Scalar(255,255,255));
+		ImgUtil::initWithColor<uchar>(charImg, 255);
+		ImgUtil::printCharToImg(ch, charImg, cvPoint(0, charImg.rows - 10));
 		double val = ImgUtil::calGrey<uchar>(charImg);
 		greyMap[ch] = val;
 		std::cout << "finish " << val << " " << (int)ch << std::endl;
@@ -34,25 +32,44 @@ GrayMap::~GrayMap() {
 
 char GrayMap::charOfGray(uchar grey)
 {
-	auto chI = instancePtr->greyIndex.lower_bound(grey);
+	auto chI = _instance->greyIndex.lower_bound(grey);
 	return chI->second;
 	
 }
 
-
-void ImgToChar<>::processImg(cv::Mat & img, cv::Mat & colorMap)
+ImgToChar::ResultType& ImgToChar::getResultString(cv::Mat & img, cv::Mat & colorMap)
 {
-	cv::resize(img, resizedMatCache, sampleSize, 0, 0, cv::INTER_AREA);
+	
+	cv::resize(img, resizedMatCache, sampleSize,0,0, cv::INTER_AREA);
 	resizedMatCache.copyTo(colorMap);
 	cv::cvtColor(resizedMatCache, greyMatCache, cv::COLOR_BGR2GRAY);
+	int nl = greyMatCache.rows;
+	int nc = greyMatCache.cols * greyMatCache.channels();
+
+	//遍历图像的每个像素
+	for (int j = 0; j<nl; ++j)
+	{
+		uchar *data = greyMatCache.ptr<uchar>(j);//.ptr<uchar>得到的是一个行的指针
+		for (int i = 0; i<nc; ++i)
+		{
+			outputCache[j][i] = GrayMap::charOfGray(data[i]);
+		}
+	}
+	return outputCache;
 }
 
-template<>
-void ImgToChar<std::vector<std::string>>::initOutputCache(size_t height, size_t width) {
-	outputCache = std::vector<std::string>(height, std::string(width, ' '));
+
+
+ImgToChar::ImgToChar(cv::Size imgSize, cv::Size _sampleSize):
+	orgSize(imgSize),
+	sampleSize(_sampleSize),
+	greyMatCache(cv::Mat(sampleSize, CV_8U)),
+	resizedMatCache(cv::Mat(sampleSize, CV_8U)),
+	outputCache(sampleSize.height, std::string(sampleSize.width, ' '))
+{
 }
 
-template<>
-void ImgToChar<std::vector<std::string>>::setCache(int i, int j, const char & value) {
-	outputCache[i][j] = value;
+
+ImgToChar::~ImgToChar()
+{
 }
